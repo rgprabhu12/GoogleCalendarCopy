@@ -86,6 +86,7 @@ def main():
     page_token = None
     calendar_ids = []
 
+    # Lots of help from https://qxf2.com/blog/google-calendar-python/
     # Currently set up to search for case of multiple matching calendars - WILL work for one
     while True:
         calendar_list = calendar_service.calendarList().list(pageToken=page_token).execute()
@@ -140,26 +141,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-# Example for calling the Calendar API & getting events from your own calendar
-# print('Getting the upcoming 10 events')
-# events_result = calendar_service.events().list(calendarId='primary',
-#                   timeMin=now, maxResults=10).execute()
-# events = events_result.get('items', [])
-# if not events:
-#     print('No upcoming events found.')
-# for event in events:
-#     start = event['start'].get('dateTime', event['start'].get('date'))
-#     print(start, event['summary'])
-
-# Example for calling the Tasks API & getting already existing tasks
-# results = tasks_service.tasklists().list(maxResults=10).execute()
-# items = results.get('items', [])
-# if not items:
-#     print('No task lists found.')
-# else:
-#     print('Task lists:')
-#     print(items)
-#     for item in items:
-#         print(u'{0} ({1})'.format(item['title'], item['id']))
