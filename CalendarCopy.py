@@ -51,11 +51,15 @@ def main():
         print("Invalid option provided")
         exit(1)
 
-    date_option = input("\n\nDATE OPTIONS: \n 1. Next Week (following Sun - Sat) \n 2. Entered Dates \nENTER: ")
+    pot_start_date = datetime.datetime.utcnow() + REL.relativedelta(weekday=REL.SU)
+    pot_end_date = (pot_start_date + REL.relativedelta(weekday=REL.SA))
+    print(pot_start_date, pot_end_date)
+
+    date_option = input("\n\nDATE OPTIONS: \n 1. Next Week (Sun - Sat) [%s] \n 2. Entered Dates \nENTER: " % (str(pot_start_date.strftime('%m-%d-%Y'))
+                                                                                                                        + " - " + str(pot_end_date.strftime('%m-%d-%Y'))))
     if(date_option == "1"):
-        start_date = datetime.datetime.utcnow() + REL.relativedelta(weekday=REL.SU)
-        end_date = (start_date + REL.relativedelta(weekday=REL.SA)).isoformat()+"Z"
-        start_date = start_date.isoformat()+"Z"
+        start_date = pot_start_date.isoformat()+"Z"
+        end_date = pot_end_date.isoformat()+"Z"
         print(start_date, end_date)
     elif(date_option == "2"):
         try:
@@ -80,7 +84,7 @@ def main():
     tasks_service = build('tasks', 'v1', credentials=creds)
     existingTasks = tasks_service.tasks().list(tasklist='@default', dueMax = end_date).execute()
 
-    print("\n\nEnter the calendar Title / search term to copy from (from your personal Google Calendar List)\nNOTE - if the search term matches >1 calendars, it will copy from all.")
+    print("\n\nEnter the calendar Title / search term to copy from (from your personal Google Calendar List)\nNOTE - if the search term matches > 1 calendars, it will copy from all.")
     searchTerm = input("ENTER: ")
     # searchTerm = "MSA"
     page_token = None
